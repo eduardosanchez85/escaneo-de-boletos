@@ -8,155 +8,200 @@
   <link rel="icon" href="./icons/icon.png" type="image/png">
 
   <style>
-    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin:0; background:#0b1220; color:#e5e7eb; }
-    .wrap { max-width: 980px; margin: 0 auto; padding: 18px; }
+    body {
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      margin: 0;
+      background: #0b1220;
+      color: #e5e7eb;
+    }
 
-    .topbar{ display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom: 12px; }
-    h1{ font-size:20px; margin:0; }
-    .muted{ color:#9ca3af; font-size:14px; }
+    .wrap {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 18px;
+    }
 
-    .btn{
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    h1 { font-size: 20px; margin: 0; }
+    .muted { color: #9ca3af; font-size: 14px; }
+
+    .btn {
       padding: 10px 12px;
       border-radius: 12px;
-      border:1px solid #334155;
-      background:#0f172a;
-      color:#e5e7eb;
-      cursor:pointer;
+      border: 1px solid #334155;
+      background: #0f172a;
+      color: #e5e7eb;
+      cursor: pointer;
       font-weight: 700;
     }
-    .btn.primary{ background:#2563eb; border-color:#1d4ed8; color:#fff; }
-    .btn.danger{ background:#2a0a0a; border-color:#7f1d1d; color:#fff; }
 
-    .grid{ display:grid; grid-template-columns: 1fr; gap: 12px; }
+    .btn.primary { background: #2563eb; border-color: #1d4ed8; color: #fff; }
+    .btn.danger { background: #2a0a0a; border-color: #7f1d1d; color: #fff; }
 
-    .card{ background:#111827; border:1px solid #1f2937; border-radius: 14px; padding: 14px; }
-    .row{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
 
-    input{
-      flex:1; min-width: 240px;
+    .card {
+      background: #111827;
+      border: 1px solid #1f2937;
+      border-radius: 14px;
+      padding: 14px;
+    }
+
+    .row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    input {
+      flex: 1;
+      min-width: 240px;
       padding: 10px 12px;
       border-radius: 12px;
-      border:1px solid #334155;
-      background:#0f172a;
-      color:#e5e7eb;
-      outline:none;
+      border: 1px solid #334155;
+      background: #0f172a;
+      color: #e5e7eb;
+      outline: none;
       font-size: 16px;
     }
 
-    .error{ display:none; background:#2a0a0a; border:1px solid #7f1d1d; border-radius:12px; padding:12px; white-space:pre-wrap; }
-    .ok{ display:none; background:#052e1a; border:1px solid #14532d; border-radius:12px; padding:12px; white-space:pre-wrap; }
+    .error {
+      display: none;
+      background: #2a0a0a;
+      border: 1px solid #7f1d1d;
+      border-radius: 12px;
+      padding: 12px;
+      white-space: pre-wrap;
+    }
 
-    /* Cámara */
-    .camWrap{ display:grid; gap:10px; }
-    video{
+    .ok {
+      display: none;
+      background: #052e1a;
+      border: 1px solid #14532d;
+      border-radius: 12px;
+      padding: 12px;
+      white-space: pre-wrap;
+    }
+
+    .camWrap {
+      position: relative;
+      display: grid;
+      gap: 10px;
+    }
+
+    video {
       width: 100%;
       border-radius: 14px;
-      background:#000;
+      background: #000;
       border: 1px solid #1f2937;
       max-height: 52vh;
       object-fit: cover;
     }
 
-    /* Ticket preview (resultado) */
-    .ticket{
+    .ticket {
       width: 100%;
       max-width: 720px;
       margin: 0 auto;
       border-radius: 16px;
-      border:1px solid #1f2937;
-      background:#0f172a;
+      border: 1px solid #1f2937;
+      background: #0f172a;
       padding: 16px;
       box-sizing: border-box;
     }
 
-    .ticketGrid{
-      display:flex;
+    .ticketGrid {
+      display: flex;
       flex-direction: column;
       gap: 14px;
     }
 
-    .info .label{ color:#9ca3af; font-size: 13px; margin-top: 10px; }
-    .info .value{ font-size: 16px; margin-top: 2px; word-break: break-word; }
-
-    .badge { display:inline-block; padding: 4px 10px; border-radius: 999px; font-size: 12px; border:1px solid #334155; }
-    .okb { background:#052e1a; border-color:#14532d; }
-    .warn { background:#2a1d05; border-color:#78350f; }
-    .bad { background:#2a0a0a; border-color:#7f1d1d; }
-
-    .qrBox{
-      width: min(320px, 90vw);
-      aspect-ratio: 1/1;
-      background:#fff;
-      border-radius: 16px;
-      padding: 10px;
-      box-sizing: border-box;
-      margin: 0 auto;
-      display:flex;
-      align-items:center;
-      justify-content:center;
+    .info .label {
+      color: #9ca3af;
+      font-size: 13px;
+      margin-top: 10px;
     }
 
-    #qrOut{ width: 100%; height:100%; display:flex; align-items:center; justify-content:center; }
-    #qrOut img, #qrOut canvas{ width:100% !important; height:100% !important; display:block; }
+    .info .value {
+      font-size: 16px;
+      margin-top: 2px;
+      word-break: break-word;
+    }
 
-    .actions{
-      display:grid;
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      border: 1px solid #334155;
+    }
+
+    .okb { background: #052e1a; border-color: #14532d; }
+    .warn { background: #2a1d05; border-color: #78350f; }
+    .bad { background: #2a0a0a; border-color: #7f1d1d; }
+
+    .actions {
+      display: grid;
       grid-template-columns: 1fr;
       gap: 10px;
       max-width: 720px;
       margin: 10px auto 0;
     }
 
-    @media (min-width: 900px){
-      .grid{ grid-template-columns: 1.2fr 0.8fr; align-items: start; }
-      .actions{ grid-template-columns: 1fr 1fr; }
-      video{ max-height: 420px; }
+    @media (min-width: 900px) {
+      .grid { grid-template-columns: 1.2fr 0.8fr; align-items: start; }
+      .actions { grid-template-columns: 1fr 1fr; }
+      video { max-height: 420px; }
     }
 
-    /* Overlay de carga encima de la cámara */
-.camWrap { position: relative; } /* importante */
+    .scanOverlay {
+      position: absolute;
+      left: 14px;
+      right: 14px;
+      top: 54px;
+      bottom: 140px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      border-radius: 14px;
+      background: rgba(0,0,0,.35);
+      backdrop-filter: blur(2px);
+      border: 1px solid rgba(255,255,255,.06);
+      z-index: 5;
+    }
 
-.scanOverlay{
-  position:absolute;
-  left: 14px;
-  right: 14px;
+    .spinner {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: 4px solid rgba(255,255,255,.25);
+      border-top-color: rgba(255,255,255,.95);
+      animation: spin 0.9s linear infinite;
+    }
 
-  /* ajusta si tu card tiene padding distinto */
-  top: 54px;          /* cae encima del área del video */
-  bottom: 140px;      /* deja libres input/botón */
+    .scanText {
+      font-weight: 700;
+      font-size: 14px;
+      color: #e5e7eb;
+    }
 
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap: 10px;
-
-  border-radius: 14px;
-  background: rgba(0,0,0,.35);
-  backdrop-filter: blur(2px);
-  border: 1px solid rgba(255,255,255,.06);
-  z-index: 5;
-}
-
-.spinner{
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  border: 4px solid rgba(255,255,255,.25);
-  border-top-color: rgba(255,255,255,.95);
-  animation: spin 0.9s linear infinite;
-}
-
-.scanText{
-  font-weight: 700;
-  font-size: 14px;
-  color: #e5e7eb;
-}
-
-@keyframes spin{
-  to { transform: rotate(360deg); }
-}
-
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
   </style>
 </head>
 
@@ -167,6 +212,7 @@
         <h1>📷 Staff · Escáner</h1>
         <div class="muted" id="subtitle">Listo para escanear</div>
       </div>
+
       <div class="row">
         <button class="btn" id="goSearchBtn">Buscar por persona</button>
         <button class="btn" id="logoutBtn">Salir</button>
@@ -178,13 +224,12 @@
       <div class="card camWrap">
         <div class="muted">Escanea el QR del pase (cámara trasera si existe).</div>
 
-        <video id="video" playsinline></video>
+        <video id="video" playsinline webkit-playsinline autoplay muted></video>
 
         <div id="scanOverlay" class="scanOverlay" style="display:none;">
           <div class="spinner"></div>
           <div class="scanText">Leyendo QR…</div>
         </div>
-
 
         <div class="row">
           <input id="tokenInput" placeholder="O pega token manualmente" autocomplete="off" autocapitalize="none" />
@@ -195,7 +240,7 @@
         <div id="errorBox" class="error"></div>
 
         <div class="muted">
-          Si no detecta QR: en algunos dispositivos el escaneo requiere Chrome/Edge reciente.
+          Si no detecta QR, usa la búsqueda por persona o pega el token manualmente.
         </div>
       </div>
 
@@ -211,16 +256,11 @@
               <div class="value" id="tNombre"></div>
 
               <div class="label">No. boleto</div>
-              <div class="value" id="tAsiento"></div>
+              <div class="value" id="tBoletoNo"></div>
 
               <div class="label">Fecha y hora</div>
               <div class="value" id="tFechaHora"></div>
             </div>
-
-            <!--<div>
-              <div class="label" style="text-align:center;">QR</div>
-              <div class="qrBox"><div id="qrOut"></div></div>
-            </div> -->
           </div>
         </div>
 
@@ -233,561 +273,529 @@
   </div>
 
   <script>
-  if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.getRegistrations().then((regs) => {
-      regs.forEach((reg) => reg.unregister());
-    });
-  }
-
-  if (window.caches) {
-    caches.keys().then((keys) => {
-      keys.forEach((key) => caches.delete(key));
-    });
-  }
-</script>
-
-  <!-- QR local (solo para mostrar el QR en resultado) -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-
-  <!--<script src="https://unpkg.com/@zxing/browser@0.1.4/umd/index.min.js"></script>-->
-
-<script>
-  // ============================
-  // CONFIG
-  // ============================
-  const API_URL = "https://script.google.com/macros/s/AKfycbzTkkTvBNJ6WpVVsrHyWoplIXF3B2E3R1qLIec0m14Z8gC_o7r987xb02Jofnd5BYFq/exec";
-
-  const AUTH_KEY = "staffAuthOk";
-  const AUTH_TS_KEY = "staffAuthTs";
-  const PIN_KEY = "staffPin";
-  const AUTH_TTL_MS = 8 * 60 * 60 * 1000;
-
-  // Scanner / Camera
-  let zxingReader = null;
-  let videoStream = null;
-  let scanning = false;
-
-  let scannerRunning = false;      // ya hay ciclo activo
-  let startInProgress = false;     // evita doble start
-  let scannerSessionId = 0;        // invalida loops viejos
-
-  // Evita doble carga
-  let isProcessingTicket = false;
-
-  // Ticket actual
-  let currentToken = "";
-  let lastScannedText = "";
-
-  // ============================
-  // DOM helpers (anti-null)
-  // ============================
-  const $ = (id) => document.getElementById(id);
-
-  function setText_(id, txt){
-    const el = $(id);
-    if (el) el.textContent = txt;
-  }
-
-  function setHTML_(id, html){
-    const el = $(id);
-    if (el) el.innerHTML = html;
-  }
-
-  function setDisplay_(id, val){
-    const el = $(id);
-    if (el) el.style.display = val;
-  }
-
-  function setSubtitle(txt){ setText_("subtitle", txt); }
-
-  function showError(msg){
-    const b = $("errorBox");
-    const ok = $("okBox");
-    if (b) { b.style.display = "block"; b.textContent = msg; }
-    if (ok) ok.style.display = "none";
-  }
-
-  function showOk(msg){
-    const b = $("okBox");
-    const er = $("errorBox");
-    if (b) { b.style.display = "block"; b.textContent = msg; }
-    if (er) er.style.display = "none";
-  }
-
-  function clearMsgs(){
-    const er = $("errorBox");
-    const ok = $("okBox");
-    if (er) { er.style.display = "none"; er.textContent = ""; }
-    if (ok) { ok.style.display = "none"; ok.textContent = ""; }
-  }
-
-  // ============================
-  // LOADER (Overlay + Spinner)
-  // ============================
-  function setLoading_(on, msg){
-    const ov = $("scanOverlay");
-    if (!ov) return;
-    ov.style.display = on ? "flex" : "none";
-    const t = ov.querySelector(".scanText");
-    if (t) t.textContent = msg || (on ? "Leyendo QR…" : "");
-  }
-
-  // ============================
-  // AUTH
-  // ============================
-  function isAuthValid_(){
-    const ok = sessionStorage.getItem(AUTH_KEY) === "1";
-    const ts = Number(sessionStorage.getItem(AUTH_TS_KEY) || "0");
-    return ok && ts && (Date.now() - ts) < AUTH_TTL_MS;
-  }
-
-  function touchAuth_(){
-    if (sessionStorage.getItem(AUTH_KEY) === "1") {
-      sessionStorage.setItem(AUTH_TS_KEY, String(Date.now()));
+    // Limpieza temporal por si antes hubo SW/cache
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.getRegistrations().then((regs) => {
+        regs.forEach((reg) => reg.unregister());
+      });
     }
-  }
 
-  function clearAuth_(){
-    sessionStorage.removeItem(AUTH_KEY);
-    sessionStorage.removeItem(AUTH_TS_KEY);
-    sessionStorage.removeItem(PIN_KEY);
-  }
+    if (window.caches) {
+      caches.keys().then((keys) => {
+        keys.forEach((key) => caches.delete(key));
+      });
+    }
+  </script>
 
-  function enforceAuthOrRedirect_(){
-    if (!isAuthValid_()){
+  <script src="https://unpkg.com/@zxing/browser@latest"></script>
+
+  <script>
+    // ============================
+    // CONFIG
+    // ============================
+    const API_URL = "https://script.google.com/macros/s/AKfycbzTkkTvBNJ6WpVVsrHyWoplIXF3B2E3R1qLIec0m14Z8gC_o7r987xb02Jofnd5BYFq/exec";
+
+    const AUTH_KEY = "staffAuthOk";
+    const AUTH_TS_KEY = "staffAuthTs";
+    const PIN_KEY = "staffPin";
+    const AUTH_TTL_MS = 8 * 60 * 60 * 1000;
+
+    let zxingReader = null;
+    let scanControls = null;
+
+    let scannerRunning = false;
+    let startInProgress = false;
+    let scannerSessionId = 0;
+
+    let isProcessingTicket = false;
+    let currentToken = "";
+    let lastScannedText = "";
+
+    const $ = (id) => document.getElementById(id);
+
+    function setText_(id, txt){
+      const el = $(id);
+      if (el) el.textContent = txt;
+    }
+
+    function setHTML_(id, html){
+      const el = $(id);
+      if (el) el.innerHTML = html;
+    }
+
+    function setDisplay_(id, val){
+      const el = $(id);
+      if (el) el.style.display = val;
+    }
+
+    function setSubtitle(txt){
+      setText_("subtitle", txt);
+    }
+
+    function showError(msg){
+      const b = $("errorBox");
+      const ok = $("okBox");
+      if (b) {
+        b.style.display = "block";
+        b.textContent = msg;
+      }
+      if (ok) {
+        ok.style.display = "none";
+        ok.textContent = "";
+      }
+    }
+
+    function showOk(msg){
+      const b = $("okBox");
+      const er = $("errorBox");
+      if (b) {
+        b.style.display = "block";
+        b.textContent = msg;
+      }
+      if (er) {
+        er.style.display = "none";
+        er.textContent = "";
+      }
+    }
+
+    function clearMsgs(){
+      const er = $("errorBox");
+      const ok = $("okBox");
+      if (er) {
+        er.style.display = "none";
+        er.textContent = "";
+      }
+      if (ok) {
+        ok.style.display = "none";
+        ok.textContent = "";
+      }
+    }
+
+    function setLoading_(on, msg){
+      const ov = $("scanOverlay");
+      if (!ov) return;
+
+      ov.style.display = on ? "flex" : "none";
+      const t = ov.querySelector(".scanText");
+      if (t) t.textContent = msg || (on ? "Leyendo QR…" : "");
+    }
+
+    // ============================
+    // AUTH
+    // ============================
+    function isAuthValid_(){
+      const ok = sessionStorage.getItem(AUTH_KEY) === "1";
+      const ts = Number(sessionStorage.getItem(AUTH_TS_KEY) || "0");
+      return ok && ts && (Date.now() - ts) < AUTH_TTL_MS;
+    }
+
+    function touchAuth_(){
+      if (sessionStorage.getItem(AUTH_KEY) === "1") {
+        sessionStorage.setItem(AUTH_TS_KEY, String(Date.now()));
+      }
+    }
+
+    function clearAuth_(){
+      sessionStorage.removeItem(AUTH_KEY);
+      sessionStorage.removeItem(AUTH_TS_KEY);
+      sessionStorage.removeItem(PIN_KEY);
+    }
+
+    function enforceAuthOrRedirect_(){
+      if (!isAuthValid_()){
+        clearAuth_();
+        location.replace("./index.html");
+        return false;
+      }
+      touchAuth_();
+      return true;
+    }
+
+    function logout_(){
+      stopScanner_();
       clearAuth_();
       location.replace("./index.html");
-      return false;
     }
-    touchAuth_();
-    return true;
-  }
 
-  function logout_(){
-    stopScanner_();
-    clearAuth_();
-    location.replace("./index.html");
-  }
+    // ============================
+    // API
+    // ============================
+    async function apiGetTicket(token){
+      const url = `${API_URL}?action=ticket&token=${encodeURIComponent(token)}`;
+      const res = await fetch(url, { method: "GET" });
+      const text = await res.text();
 
-  // ============================
-  // API
-  // ============================
-  async function apiGetTicket(token){
-    const url = `${API_URL}?action=ticket&token=${encodeURIComponent(token)}`;
-    const res = await fetch(url, { method: "GET" });
-    const text = await res.text();
-    let data;
-    try { data = JSON.parse(text); } catch { throw new Error("Respuesta no JSON: " + text); }
-    return data;
-  }
-
-  async function apiCheckin(token, pin){
-    const res = await fetch(API_URL, {
-      method: "POST",
-      body: new URLSearchParams({ action: "checkin", token, pin })
-    });
-    const text = await res.text();
-    let data;
-    try { data = JSON.parse(text); } catch { throw new Error("Respuesta no JSON: " + text); }
-    return data;
-  }
-
-  // ============================
-  // QR -> token
-  // ============================
-  function extractTokenFromQrText(txt){
-    const s = String(txt || "").trim();
-    if (!s) return "";
-    try {
-      const u = new URL(s);
-      const t = (u.searchParams.get("token") || "").trim();
-      if (t) return t;
-    } catch(_) {}
-    return s;
-  }
-
-  // ============================
-  // UI Ticket
-  // ============================
-  function setStatusBadge(status){
-    const s = String(status || "").toUpperCase();
-    let cls = "badge";
-    let label = s || "DESCONOCIDO";
-
-    if (s === "ISSUED") { cls += " okb"; label = "VÁLIDO"; }
-    else if (s === "USED") { cls += " warn"; label = "YA USADO"; }
-    else if (s === "CANCELED" || s === "EXPIRED") { cls += " bad"; label = s; }
-    else { cls += " bad"; }
-
-    setHTML_("tStatus", `<span class="${cls}">${label}</span>`);
-  }
-
-  function updateCheckinButton_(status){
-    const s = String(status || "").toUpperCase();
-    const btn = $("btnCheckin");
-    if (!btn) return;
-
-    const isUsed = (s === "USED");
-    const isInvalid = (s === "CANCELED" || s === "EXPIRED");
-
-    if (isUsed || isInvalid) {
-      btn.disabled = true;
-      btn.textContent = isUsed ? "Ya utilizado" : "No válido";
-      btn.classList.add("danger");
-    } else {
-      btn.disabled = false;
-      btn.textContent = "Marcar llegada";
-      btn.classList.remove("danger");
-    }
-  }
-
-  function showTicketUI_(ticket){
-    setDisplay_("ticketBox", "block");
-    setDisplay_("actionsBox", "grid");
-
-    const status = (ticket.estatus || ticket.status || "").toUpperCase();
-
-    setStatusBadge(status);
-    setText_("tNombre", ticket.nombre || "-");
-    setText_("tAsiento", ticket.boletoNo || "-");
-    setText_("tFechaHora", ticket.fechaHora || "-");
-
-    updateCheckinButton_(status);
-  }
-
-  function clearTicketUI_(){
-    setDisplay_("ticketBox", "none");
-    setDisplay_("actionsBox", "none");
-
-    // OJO: todo con guards
-    setHTML_("qrOut", "");
-    setHTML_("tStatus", "");
-    setText_("tNombre", "");
-    setText_("tAsiento", "");
-    setText_("tFechaHora", "");
-  }
-
-  // ============================
-  // Flujo
-  // ============================
-  async function loadAndShowTicket_(token, scannedText){
-    if (!enforceAuthOrRedirect_()) return;
-    if (isProcessingTicket) return;
-
-    isProcessingTicket = true;
-    clearMsgs();
-    setSubtitle("Buscando…");
-    setLoading_(true, "Validando pase…");
-
-    try{
-      const data = await apiGetTicket(token);
-
-      if (!data.ok){
-        clearTicketUI_();
-        setSubtitle("No encontrado");
-        showError("Pase no encontrado o token inválido.");
-        return;
-      }
-
-      touchAuth_();
-
-      currentToken = token;
-      lastScannedText = scannedText || "";
-
-      setSubtitle("Pase cargado (cámara en pausa)");
-      showOk("✅ Pase cargado. Presiona Limpiar para escanear otro.");
-      showTicketUI_(data.ticket);
-
-      pauseScanner_();
-    } catch(e){
-      console.error(e);
-      setSubtitle("Error");
-      showError("Error al consultar el pase: " + (e?.message || e));
-    } finally {
-      setLoading_(false);
-      isProcessingTicket = false;
-    }
-  }
-
-  async function doManualSearch_(){
-    if (!enforceAuthOrRedirect_()) return;
-
-    const token = ( $("tokenInput")?.value || "" ).trim();
-    if (!token) { showError("Pega un token para buscar."); return; }
-
-    await loadAndShowTicket_(token, token);
-  }
-
-  async function ensurePin_(){
-    let pin = sessionStorage.getItem(PIN_KEY);
-    if (pin) return pin;
-
-    pin = prompt("Ingresa el PIN del staff para marcar llegada:");
-    if (!pin) throw new Error("PIN requerido.");
-    pin = String(pin).trim();
-    sessionStorage.setItem(PIN_KEY, pin);
-    return pin;
-  }
-
-  async function doCheckin_(){
-    if (!enforceAuthOrRedirect_()) return;
-    if (!currentToken) { showError("No hay ticket cargado."); return; }
-
-    const btn = $("btnCheckin");
-    if (btn?.disabled) return; // si USED/invalid
-
-    if (btn){
-      btn.disabled = true;
-      btn.textContent = "Marcando…";
-    }
-    setLoading_(true, "Marcando llegada…");
-
-    try{
-      clearMsgs();
-      const pin = await ensurePin_();
-      const r = await apiCheckin(currentToken, pin);
-
-      if (!r.ok){
-        if (r.error === "INVALID_PIN") sessionStorage.removeItem(PIN_KEY);
-        showError("No se pudo marcar: " + (r.error || "ERROR"));
-        return;
-      }
-
-      touchAuth_();
-      showOk(r.alreadyUsed ? "⚠️ Este pase YA estaba usado." : "✅ Llegada marcada.");
-
-      // refrescar ticket
-      await loadAndShowTicket_(currentToken, lastScannedText || currentToken);
-    } catch(e){
-      console.error(e);
-      showError("Error en check-in: " + (e?.message || e));
-    } finally {
-      setLoading_(false);
-      // no fuerces habilitar: lo decide el status real al refrescar
-      if (btn && !btn.disabled) btn.textContent = "Marcar llegada";
-    }
-  }
-
-  // ✅ Limpiar: reinicia ESCÁNER desde el click (sin recargar)
-  async function doClear_(){
-    // 1) detener sí o sí
-    stopScanner_();
-
-    // 2) limpiar estados/UI
-    currentToken = "";
-    lastScannedText = "";
-    isProcessingTicket = false;
-
-    const ti = $("tokenInput");
-    if (ti) ti.value = "";
-
-    clearMsgs();
-    clearTicketUI_();
-    setLoading_(false);
-
-    // 3) volver a escanear
-    await startScannerNow_();
-  }
-
-  // ============================
-  // Cámara + scanner
-  // ============================
-  function sleep_(ms){ return new Promise(r => setTimeout(r, ms)); }
-
-  async function startCamera_(){
-    const video = $("video");
-    if (!video) throw new Error("No existe #video");
-
-    // por si quedó algo pegado
-    try { video.pause(); } catch(_) {}
-    try { video.srcObject = null; } catch(_) {}
-
-    videoStream = await navigator.mediaDevices.getUserMedia({
-      video: { facingMode: { ideal: "environment" } },
-      audio: false
-    });
-
-    video.srcObject = videoStream;
-    await video.play();
-  }
-
-  function loadZxingIfNeeded_(){
-    return new Promise((resolve, reject) => {
-      if (window.ZXingBrowser?.BrowserQRCodeReader) return resolve();
-
-      const existing = document.querySelector('script[data-zxing="1"]');
-      if (existing) {
-        existing.addEventListener("load", resolve, { once:true });
-        existing.addEventListener("error", () => reject(new Error("ZXing no cargó")), { once:true });
-        return;
-      }
-
-      const s = document.createElement("script");
-      s.src = "https://unpkg.com/@zxing/browser@0.1.4/umd/index.min.js";
-      s.setAttribute("data-zxing","1");
-      s.onload = resolve;
-      s.onerror = () => reject(new Error("No se pudo cargar ZXing."));
-      document.head.appendChild(s);
-    });
-  }
-
-  async function scanLoop_(){
-    const video = $("video");
-    if (!video) return;
-
-    const mySession = scannerSessionId;
-
-    // 1) BarcodeDetector
-    if ("BarcodeDetector" in window) {
+      let data;
       try {
-        const formats = await BarcodeDetector.getSupportedFormats();
-        if (Array.isArray(formats) && formats.includes("qr_code")) {
-          const detector = new BarcodeDetector({ formats: ["qr_code"] });
-          scanning = true;
+        data = JSON.parse(text);
+      } catch {
+        throw new Error("Respuesta no JSON: " + text);
+      }
 
-          while (scanning && mySession === scannerSessionId) {
-            if (currentToken || isProcessingTicket) { await sleep_(120); continue; }
+      return data;
+    }
 
-            try {
-              const barcodes = await detector.detect(video);
-              if (mySession !== scannerSessionId) break;
+    async function apiCheckin(token, pin){
+      const res = await fetch(API_URL, {
+        method: "POST",
+        body: new URLSearchParams({ action: "checkin", token, pin })
+      });
 
-              if (barcodes?.length) {
-                const raw = barcodes[0].rawValue || "";
-                const token = extractTokenFromQrText(raw);
-                if (token) {
-                  setLoading_(true, "QR detectado…");
-                  await loadAndShowTicket_(token, raw);
-                  await sleep_(250);
-                }
-              }
-            } catch(_) {}
+      const text = await res.text();
 
-            await sleep_(90);
-          }
+      let data;
+      try {
+        data = JSON.parse(text);
+      } catch {
+        throw new Error("Respuesta no JSON: " + text);
+      }
+
+      return data;
+    }
+
+    // ============================
+    // QR -> token
+    // ============================
+    function extractTokenFromQrText(txt){
+      const s = String(txt || "").trim();
+      if (!s) return "";
+
+      try {
+        const u = new URL(s);
+        const t = (u.searchParams.get("token") || "").trim();
+        if (t) return t;
+      } catch(_) {}
+
+      return s;
+    }
+
+    // ============================
+    // UI Ticket
+    // ============================
+    function setStatusBadge(status){
+      const s = String(status || "").toUpperCase();
+      let cls = "badge";
+      let label = s || "DESCONOCIDO";
+
+      if (s === "ISSUED") { cls += " okb"; label = "VÁLIDO"; }
+      else if (s === "USED") { cls += " warn"; label = "YA USADO"; }
+      else if (s === "CANCELED" || s === "EXPIRED") { cls += " bad"; label = s; }
+      else { cls += " bad"; }
+
+      setHTML_("tStatus", `<span class="${cls}">${label}</span>`);
+    }
+
+    function updateCheckinButton_(status){
+      const s = String(status || "").toUpperCase();
+      const btn = $("btnCheckin");
+      if (!btn) return;
+
+      const isUsed = s === "USED";
+      const isInvalid = s === "CANCELED" || s === "EXPIRED";
+
+      if (isUsed || isInvalid) {
+        btn.disabled = true;
+        btn.textContent = isUsed ? "Ya utilizado" : "No válido";
+        btn.classList.add("danger");
+      } else {
+        btn.disabled = false;
+        btn.textContent = "Marcar llegada";
+        btn.classList.remove("danger");
+      }
+    }
+
+    function showTicketUI_(ticket){
+      setDisplay_("ticketBox", "block");
+      setDisplay_("actionsBox", "grid");
+
+      const status = (ticket.estatus || ticket.status || "").toUpperCase();
+
+      setStatusBadge(status);
+      setText_("tNombre", ticket.nombre || "-");
+      setText_("tBoletoNo", ticket.boletoNo || "-");
+      setText_("tFechaHora", ticket.fechaHora || "-");
+
+      updateCheckinButton_(status);
+    }
+
+    function clearTicketUI_(){
+      setDisplay_("ticketBox", "none");
+      setDisplay_("actionsBox", "none");
+
+      setHTML_("tStatus", "");
+      setText_("tNombre", "");
+      setText_("tBoletoNo", "");
+      setText_("tFechaHora", "");
+    }
+
+    // ============================
+    // Flujo
+    // ============================
+    async function loadAndShowTicket_(token, scannedText){
+      if (!enforceAuthOrRedirect_()) return;
+      if (isProcessingTicket) return;
+
+      isProcessingTicket = true;
+      clearMsgs();
+      setSubtitle("Buscando…");
+      setLoading_(true, "Validando pase…");
+
+      try {
+        const data = await apiGetTicket(token);
+
+        if (!data.ok){
+          clearTicketUI_();
+          setSubtitle("No encontrado");
+          showError("Pase no encontrado o token inválido.");
           return;
         }
-      } catch(_) {}
+
+        touchAuth_();
+        currentToken = token;
+        lastScannedText = scannedText || "";
+
+        setSubtitle("Pase cargado (cámara en pausa)");
+        showOk("✅ Pase cargado. Presiona Limpiar para escanear otro.");
+        showTicketUI_(data.ticket);
+
+        pauseScanner_();
+      } catch(e){
+        console.error(e);
+        setSubtitle("Error");
+        showError("Error al consultar el pase: " + (e?.message || e));
+      } finally {
+        setLoading_(false);
+        isProcessingTicket = false;
+      }
     }
 
-    // 2) ZXing fallback
-    await loadZxingIfNeeded_();
-    if (!(window.ZXingBrowser?.BrowserQRCodeReader)) {
-      showError("No se pudo cargar el lector QR (ZXing). Usa búsqueda manual.");
-      return;
+    async function doManualSearch_(){
+      if (!enforceAuthOrRedirect_()) return;
+
+      const token = ($("tokenInput")?.value || "").trim();
+      if (!token) {
+        showError("Pega un token para buscar.");
+        return;
+      }
+
+      await loadAndShowTicket_(token, token);
     }
 
-    zxingReader = new ZXingBrowser.BrowserQRCodeReader();
-    scanning = true;
+    async function ensurePin_(){
+      let pin = sessionStorage.getItem(PIN_KEY);
+      if (pin) return pin;
 
-    try {
-      await zxingReader.decodeFromVideoElement(video, async (result) => {
-        if (!scanning) return;
-        if (mySession !== scannerSessionId) return;
-        if (currentToken || isProcessingTicket) return;
+      pin = prompt("Ingresa el PIN del staff para marcar llegada:");
+      if (!pin) throw new Error("PIN requerido.");
+      pin = String(pin).trim();
+      sessionStorage.setItem(PIN_KEY, pin);
+      return pin;
+    }
 
-        if (result) {
-          const raw = result.getText ? result.getText() : "";
-          const token = extractTokenFromQrText(raw);
-          if (token) {
-            setLoading_(true, "QR detectado…");
-            await loadAndShowTicket_(token, raw);
-            await sleep_(250);
-          }
+    async function doCheckin_(){
+      if (!enforceAuthOrRedirect_()) return;
+      if (!currentToken) {
+        showError("No hay ticket cargado.");
+        return;
+      }
+
+      const btn = $("btnCheckin");
+      if (btn?.disabled) return;
+
+      if (btn){
+        btn.disabled = true;
+        btn.textContent = "Marcando…";
+      }
+
+      setLoading_(true, "Marcando llegada…");
+
+      try {
+        clearMsgs();
+        const pin = await ensurePin_();
+        const r = await apiCheckin(currentToken, pin);
+
+        if (!r.ok){
+          if (r.error === "INVALID_PIN") sessionStorage.removeItem(PIN_KEY);
+          showError("No se pudo marcar: " + (r.error || "ERROR"));
+          return;
         }
-      });
-    } catch(e){
-      if (mySession === scannerSessionId) {
-        showError("No se pudo iniciar el lector QR. Revisa permisos de cámara.");
+
+        touchAuth_();
+        showOk(r.alreadyUsed ? "⚠️ Este pase YA estaba usado." : "✅ Llegada marcada.");
+
+        await loadAndShowTicket_(currentToken, lastScannedText || currentToken);
+      } catch(e){
+        console.error(e);
+        showError("Error en check-in: " + (e?.message || e));
+      } finally {
+        setLoading_(false);
+        if (btn && !btn.disabled) btn.textContent = "Marcar llegada";
       }
     }
-  }
 
-  function stopScanner_(){
-    // invalida loops viejos
-    scannerSessionId++;
-    scanning = false;
-    scannerRunning = false;
-
-    if (zxingReader) {
-      try { zxingReader.reset(); } catch(_) {}
-      zxingReader = null;
-    }
-
-    const video = $("video");
-    if (video) {
-      try { video.pause(); } catch(_) {}
-      try { video.srcObject = null; } catch(_) {}
-    }
-
-    if (videoStream){
-      for (const t of videoStream.getTracks()) {
-        try { t.stop(); } catch(_) {}
-      }
-      videoStream = null;
-    }
-  }
-
-  function pauseScanner_(){
-    stopScanner_();
-    setSubtitle("Pase cargado (cámara en pausa)");
-  }
-
-  async function startScannerNow_(){
-    if (!enforceAuthOrRedirect_()) return;
-    if (scannerRunning || startInProgress) return;
-
-    // ✅ si veníamos de pausa, volvemos a “escaneando”
-    setSubtitle("Escaneando…");
-    clearMsgs();
-    setLoading_(false);
-
-    startInProgress = true;
-    scannerRunning = true;
-
-    try {
-      await startCamera_();
-      await scanLoop_();
-    } catch (e) {
-      console.error(e);
-      showError("No se pudo iniciar cámara/lector. Revisa permisos.");
-      setSubtitle("Error");
-    } finally {
-      startInProgress = false;
-      scannerRunning = false;
-    }
-  }
-
-  // ============================
-  // INIT
-  // ============================
-  document.addEventListener("DOMContentLoaded", () => {
-    if (!enforceAuthOrRedirect_()) return;
-
-    $("logoutBtn")?.addEventListener("click", logout_);
-
-    $("goSearchBtn")?.addEventListener("click", () => {
+    async function doClear_(){
       stopScanner_();
-      location.href = "./staff-search.html";
+
+      currentToken = "";
+      lastScannedText = "";
+      isProcessingTicket = false;
+
+      const ti = $("tokenInput");
+      if (ti) ti.value = "";
+
+      clearMsgs();
+      clearTicketUI_();
+      setLoading_(false);
+
+      await startScannerNow_();
+    }
+
+    // ============================
+    // Cámara + ZXing
+    // ============================
+    function sleep_(ms){
+      return new Promise(r => setTimeout(r, ms));
+    }
+
+    function ensureZXing_(){
+      if (!window.ZXingBrowser?.BrowserQRCodeReader) {
+        throw new Error("ZXing no está disponible.");
+      }
+    }
+
+    async function startScannerNow_(){
+      if (!enforceAuthOrRedirect_()) return;
+      if (scannerRunning || startInProgress) return;
+
+      const video = $("video");
+      if (!video) return;
+
+      setSubtitle("Escaneando…");
+      clearMsgs();
+      setLoading_(false);
+
+      startInProgress = true;
+      scannerRunning = true;
+      scannerSessionId += 1;
+      const mySession = scannerSessionId;
+
+      try {
+        ensureZXing_();
+
+        zxingReader = new ZXingBrowser.BrowserQRCodeReader();
+
+        const constraints = {
+          audio: false,
+          video: {
+            facingMode: { ideal: "environment" },
+            width: { ideal: 1280 },
+            height: { ideal: 720 }
+          }
+        };
+
+        scanControls = await zxingReader.decodeFromConstraints(
+          constraints,
+          video,
+          async (result, error) => {
+            if (!scannerRunning) return;
+            if (mySession !== scannerSessionId) return;
+            if (currentToken || isProcessingTicket) return;
+
+            if (result) {
+              const raw = result.getText ? result.getText() : "";
+              const token = extractTokenFromQrText(raw);
+
+              if (token) {
+                setLoading_(true, "QR detectado…");
+                await loadAndShowTicket_(token, raw);
+                await sleep_(250);
+              }
+              return;
+            }
+
+            // Ignorar errores normales de "no QR detectado"
+            if (error && error.name && String(error.name).includes("NotFound")) {
+              return;
+            }
+          }
+        );
+
+        video.setAttribute("playsinline", "true");
+        video.setAttribute("webkit-playsinline", "true");
+        await sleep_(400);
+      } catch (e) {
+        console.error("Error ZXing:", e);
+        showError(
+          "No se pudo iniciar el lector QR. En iPad usa Safari y abre la página por HTTPS. Error: " +
+          (e?.message || e)
+        );
+        setSubtitle("Error de lector");
+      } finally {
+        startInProgress = false;
+      }
+    }
+
+    function stopScanner_(){
+      scannerRunning = false;
+      scannerSessionId += 1;
+
+      if (scanControls) {
+        try { scanControls.stop(); } catch(_) {}
+        scanControls = null;
+      }
+
+      if (zxingReader) {
+        try { zxingReader.reset(); } catch(_) {}
+        zxingReader = null;
+      }
+
+      const video = $("video");
+      if (video) {
+        try { video.pause(); } catch(_) {}
+        try { video.srcObject = null; } catch(_) {}
+      }
+    }
+
+    function pauseScanner_(){
+      stopScanner_();
+      setSubtitle("Pase cargado (cámara en pausa)");
+    }
+
+    // ============================
+    // INIT
+    // ============================
+    document.addEventListener("visibilitychange", async () => {
+      if (document.visibilityState === "hidden") {
+        stopScanner_();
+      } else if (!currentToken) {
+        await startScannerNow_();
+      }
     });
 
-    $("btnBuscar")?.addEventListener("click", doManualSearch_);
-    $("tokenInput")?.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") doManualSearch_();
+    document.addEventListener("DOMContentLoaded", () => {
+      if (!enforceAuthOrRedirect_()) return;
+
+      $("logoutBtn")?.addEventListener("click", logout_);
+
+      $("goSearchBtn")?.addEventListener("click", () => {
+        stopScanner_();
+        location.href = "./staff-search.html";
+      });
+
+      $("btnBuscar")?.addEventListener("click", doManualSearch_);
+      $("tokenInput")?.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") doManualSearch_();
+      });
+
+      $("btnCheckin")?.addEventListener("click", doCheckin_);
+      $("btnLimpiar")?.addEventListener("click", async (e) => {
+        e.preventDefault();
+        await doClear_();
+      });
+
+      startScannerNow_();
+      window.addEventListener("beforeunload", stopScanner_);
     });
-
-    $("btnCheckin")?.addEventListener("click", doCheckin_);
-    $("btnLimpiar")?.addEventListener("click", async (e) => {
-      e.preventDefault();
-      await doClear_();
-    });
-
-    startScannerNow_();
-    window.addEventListener("beforeunload", stopScanner_);
-  });
-</script>
-
-
-
+  </script>
 </body>
 </html>
