@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Staff · Buscar persona</title>
 
-  <link rel="icon" href="./icons/icon.png" type="image/png">
+  <link rel="icon" href="./icon.png" type="image/png" />
 
   <style>
     body{
@@ -208,7 +208,7 @@
     <div class="topbar">
       <div>
         <h1>👤 Staff · Buscar por persona</h1>
-        <div class="muted" id="subtitle">Escribe un nombre para buscar en la lista del evento.</div>
+        <div class="muted" id="subtitle">Escribe un nombre o No. boleto para buscar.</div>
       </div>
 
       <div class="row">
@@ -222,7 +222,7 @@
       <!-- Búsqueda -->
       <div class="card">
         <div class="row">
-          <input id="searchInput" placeholder="Buscar por nombre, apellidos o asiento" autocomplete="off" />
+          <input id="searchInput" placeholder="Buscar por nombre, No. boleto o ticket ID" autocomplete="off" />
           <button class="btn primary" id="clearSearchBtn">Limpiar</button>
         </div>
 
@@ -231,7 +231,7 @@
         <div id="errorBox" class="error"></div>
 
         <div class="muted" style="margin-top:12px;">
-          Puedes escribir parte del nombre. Si hay personas repetidas, compáralas por asiento, fecha/hora y estado.
+          Si hay personas repetidas, compáralas por No. boleto, fecha/hora y estado.
         </div>
 
         <div id="resultsInfo" class="muted" style="margin-top:12px;"></div>
@@ -249,8 +249,8 @@
             <div class="label">Nombre</div>
             <div class="value" id="tNombre"></div>
 
-            <div class="label">Asiento</div>
-            <div class="value" id="tAsiento"></div>
+            <div class="label">No. boleto</div>
+            <div class="value" id="tBoletoNo"></div>
 
             <div class="label">Fecha y hora</div>
             <div class="value" id="tFechaHora"></div>
@@ -276,42 +276,40 @@
   </div>
 
   <script>
-  if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.getRegistrations().then((regs) => {
-      regs.forEach((reg) => reg.unregister());
-    });
-  }
-
-  if (window.caches) {
-    caches.keys().then((keys) => {
-      keys.forEach((key) => caches.delete(key));
-    });
-  }
-</script>
-
-  <script>
     const API_URL = "https://script.google.com/macros/s/AKfycbxb7tNEfgSrmGHAYDYR76rJw3eS9XJ2XG2JaDppxiS1ls0j_iQJck5599wGbkBlvxezZg/exec";
 
     const AUTH_KEY = "staffAuthOk";
     const AUTH_TS_KEY = "staffAuthTs";
     const PIN_KEY = "staffPin";
     const AUTH_TTL_MS = 8 * 60 * 60 * 1000;
-    const SYNC_MS = 30000;
+    const SYNC_MS = 8000;
 
     let ticketsCache = [];
     let filteredCache = [];
     let currentToken = "";
     let syncTimer = null;
     let syncing = false;
+    let msgTimer = null;
 
     const $ = (id) => document.getElementById(id);
 
-    let msgTimer = null;
+    function setText_(id, txt){
+      const el = $(id);
+      if (el) el.textContent = txt;
+    }
+
+    function setHTML_(id, html){
+      const el = $(id);
+      if (el) el.innerHTML = html;
+    }
+
+    function setDisplay_(id, value){
+      const el = $(id);
+      if (el) el.style.display = value;
+    }
 
     function autoHideMsgs_(ms = 3000){
-      if (msgTimer) {
-        clearTimeout(msgTimer);
-      }
+      if (msgTimer) clearTimeout(msgTimer);
 
       msgTimer = setTimeout(() => {
         const er = $("errorBox");
@@ -329,21 +327,6 @@
       }, ms);
     }
 
-    function setText_(id, txt){
-      const el = $(id);
-      if (el) el.textContent = txt;
-    }
-
-    function setHTML_(id, html){
-      const el = $(id);
-      if (el) el.innerHTML = html;
-    }
-
-    function setDisplay_(id, value){
-      const el = $(id);
-      if (el) el.style.display = value;
-    }
-
     function showError(msg){
       const er = $("errorBox");
       const ok = $("okBox");
@@ -358,7 +341,7 @@
         ok.textContent = "";
       }
 
-      autoHideMsgs_(4000); // 4 segundos
+      autoHideMsgs_(4000);
     }
 
     function showOk(msg){
@@ -375,7 +358,7 @@
         er.textContent = "";
       }
 
-      autoHideMsgs_(3000); // 3 segundos
+      autoHideMsgs_(3000);
     }
 
     function clearMsgs(){
@@ -525,14 +508,20 @@
       return data;
     }
 
+    function escapeHtml_(text){
+      return String(text || "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
     function renderResults_(items){
       const box = $("resultsBox");
-      const empty = $("emptyBox");
-      const info = $("resultsInfo");
-
       if (!box) return;
-      box.innerHTML = "";
 
+      box.innerHTML = "";
       setText_("resultsInfo", `${items.length} resultado(s)`);
 
       if (!items.length){
@@ -549,7 +538,7 @@
         div.innerHTML = `
           <div class="person-title">${escapeHtml_(item.nombre || "Sin nombre")}</div>
           <div class="person-meta">
-            <div>Asiento: ${escapeHtml_(item.asiento || "-")}</div>
+            <div>No. boleto: ${escapeHtml_(item.boletoNo || "-")}</div>
             <div>Fecha y hora: ${escapeHtml_(item.fechaHora || "-")}</div>
             <div>Ticket ID: ${escapeHtml_(item.ticketId || "-")}</div>
             <div style="margin-top:6px;">${badgeHtml_(item.estatus)}</div>
@@ -564,15 +553,6 @@
       });
     }
 
-    function escapeHtml_(text){
-      return String(text || "")
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll('"', "&quot;")
-        .replaceAll("'", "&#039;");
-    }
-
     function applySearch_(){
       const q = normalize_( $("searchInput")?.value || "" );
 
@@ -581,12 +561,13 @@
       } else {
         filteredCache = ticketsCache.filter(item => {
           const nombre = normalize_(item.nombre);
-          const asiento = normalize_(item.asiento);
+          const boletoNo = normalize_(item.boletoNo);
           const ticketId = normalize_(item.ticketId);
           const fechaHora = normalize_(item.fechaHora);
+
           return (
             nombre.includes(q) ||
-            asiento.includes(q) ||
+            boletoNo.includes(q) ||
             ticketId.includes(q) ||
             fechaHora.includes(q)
           );
@@ -607,7 +588,7 @@
 
       setHTML_("tStatus", badgeHtml_(item.estatus));
       setText_("tNombre", item.nombre || "-");
-      setText_("tAsiento", item.asiento || "-");
+      setText_("tBoletoNo", item.boletoNo || "-");
       setText_("tFechaHora", item.fechaHora || "-");
       setText_("tTicketId", item.ticketId || "-");
       setText_("tToken", item.token || "-");
@@ -624,7 +605,7 @@
 
       setHTML_("tStatus", "");
       setText_("tNombre", "");
-      setText_("tAsiento", "");
+      setText_("tBoletoNo", "");
       setText_("tFechaHora", "");
       setText_("tTicketId", "");
       setText_("tToken", "");
@@ -638,7 +619,7 @@
       ticketsCache.sort((a, b) => {
         const nameCmp = String(a.nombre || "").localeCompare(String(b.nombre || ""), "es", { sensitivity: "base" });
         if (nameCmp !== 0) return nameCmp;
-        return String(a.asiento || "").localeCompare(String(b.asiento || ""), "es", { sensitivity: "base" });
+        return String(a.boletoNo || "").localeCompare(String(b.boletoNo || ""), "es", { sensitivity: "base" });
       });
     }
 
@@ -706,22 +687,21 @@
         if (idx >= 0 && r.ticket) {
           ticketsCache[idx] = {
             ...ticketsCache[idx],
+            boletoNo: r.ticket.boletoNo || ticketsCache[idx].boletoNo,
             ticketId: r.ticket.ticketId || ticketsCache[idx].ticketId,
             token: r.ticket.token || ticketsCache[idx].token,
             nombre: r.ticket.nombre || ticketsCache[idx].nombre,
-            asiento: r.ticket.asiento || ticketsCache[idx].asiento,
             estatus: r.ticket.estatus || ticketsCache[idx].estatus,
             fechaHora: r.ticket.fechaHora || ticketsCache[idx].fechaHora
           };
         } else if (idx >= 0) {
-          ticketsCache[idx] = { ...ticketsCache[idx], estatus: r.alreadyUsed ? "USED" : "USED" };
+          ticketsCache[idx] = { ...ticketsCache[idx], estatus: "USED" };
         }
 
         applySearch_();
         selectTicket_(currentToken);
         showOk(r.alreadyUsed ? "⚠️ Este pase ya estaba usado." : "✅ Llegada marcada.");
 
-        // Re-sync ligera para refrescar el resto de dispositivos/estados
         setTimeout(() => syncTickets_(false), 500);
       } catch (e) {
         console.error(e);
@@ -756,12 +736,14 @@
       if (!enforceAuthOrRedirect_()) return;
 
       $("logoutBtn")?.addEventListener("click", logout_);
+
       $("goScanBtn")?.addEventListener("click", () => {
         stopSync_();
         location.href = "./staff-scan.html";
       });
 
       $("reloadBtn")?.addEventListener("click", () => syncTickets_(true));
+
       $("clearSearchBtn")?.addEventListener("click", () => {
         $("searchInput").value = "";
         applySearch_();

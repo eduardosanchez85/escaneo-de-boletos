@@ -210,7 +210,7 @@
               <div class="label">Nombre</div>
               <div class="value" id="tNombre"></div>
 
-              <div class="label">Asiento</div>
+              <div class="label">No. boleto</div>
               <div class="value" id="tAsiento"></div>
 
               <div class="label">Fecha y hora</div>
@@ -255,7 +255,7 @@
   // ============================
   // CONFIG
   // ============================
-  const API_URL = "https://script.google.com/macros/s/AKfycbxb7tNEfgSrmGHAYDYR76rJw3eS9XJ2XG2JaDppxiS1ls0j_iQJck5599wGbkBlvxezZg/exec";
+  const API_URL = "https://script.google.com/macros/s/AKfycbzTkkTvBNJ6WpVVsrHyWoplIXF3B2E3R1qLIec0m14Z8gC_o7r987xb02Jofnd5BYFq/exec";
 
   const AUTH_KEY = "staffAuthOk";
   const AUTH_TS_KEY = "staffAuthTs";
@@ -449,7 +449,7 @@
 
     setStatusBadge(status);
     setText_("tNombre", ticket.nombre || "-");
-    setText_("tAsiento", ticket.asiento || "-");
+    setText_("tAsiento", ticket.boletoNo || "-");
     setText_("tFechaHora", ticket.fechaHora || "-");
 
     updateCheckinButton_(status);
