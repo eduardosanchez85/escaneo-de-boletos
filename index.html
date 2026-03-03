@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Staff · Login</title>
+
+  <!-- Favicon clásico -->
+<link rel="icon" href="./icons/icon.png" type="image/png">
+
+  <link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+  integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+/>
+
+
+  <meta name="theme-color" content="#111827" />
+
+
+  <style>
+  body {
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    margin: 0;
+    background: #0b1220;
+    color: #e5e7eb;
+  }
+
+  .wrap { max-width: 720px; margin: 0 auto; padding: 18px; }
+
+  .card {
+    background: #111827;
+    border: 1px solid #1f2937;
+    border-radius: 14px;
+    padding: 16px;
+  }
+
+  h1 { font-size: 20px; margin: 0 0 8px; }
+  .muted { color: #9ca3af; font-size: 14px; }
+
+  /* ====== ROW ====== */
+  .row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 14px;
+    align-items: center;
+  }
+
+  /* ====== INPUT WRAPPER (PIN + OJO) ====== */
+  .input-wrapper {
+    position: relative;
+    flex: 1 1 320px;     /* crece y se adapta */
+    min-width: 240px;
+    width: 100%;
+  }
+
+  /* Input SOLO dentro del wrapper */
+  .input-wrapper input {
+    width: 100%;
+    padding: 12px 44px 12px 12px; /* espacio para el ojo */
+    border-radius: 12px;
+    border: 1px solid #334155;
+    background: #0f172a;
+    color: #e5e7eb;
+    outline: none;
+    font-size: 16px;
+    box-sizing: border-box;
+  }
+
+  .toggle-pin {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 34px;
+    height: 34px;
+    display: grid;
+    place-items: center;
+    background: none;
+    border: none;
+    color: #9ca3af;
+    cursor: pointer;
+    font-size: 18px;
+    padding: 0;
+  }
+
+  .toggle-pin:hover { color: #e5e7eb; }
+
+  /* ====== BOTÓN ====== */
+  .btn {
+    padding: 12px 14px;
+    border-radius: 12px;
+    border: 1px solid #1d4ed8;
+    background: #2563eb;
+    color: #fff;
+    cursor: pointer;
+    font-weight: 700;
+    min-width: 120px;
+    flex: 0 0 auto; /* no se estira raro */
+  }
+
+  .btn:active { transform: translateY(1px); }
+
+  .error {
+    margin-top: 12px;
+    background: #2a0a0a;
+    border: 1px solid #7f1d1d;
+    border-radius: 12px;
+    padding: 12px;
+    white-space: pre-wrap;
+    display: none;
+  }
+
+  .ok {
+    margin-top: 12px;
+    background: #052e1a;
+    border: 1px solid #14532d;
+    border-radius: 12px;
+    padding: 12px;
+    display: none;
+  }
+
+  /* ====== MÓVIL: input arriba, botón abajo ====== */
+  @media (max-width: 520px) {
+    .row {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .input-wrapper {
+      min-width: 0;
+    }
+
+    .btn {
+      width: 100%;
+      min-width: 0;
+    }
+  }
+</style>
+
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>🔐 Staff · Login</h1>
+      <div class="muted">Ingresa el PIN para acceder al escáner.</div>
+
+      <div class="row">
+        <div class="input-wrapper">
+          <input
+            id="pinInput"
+            type="password"
+            inputmode="numeric"
+            placeholder="PIN"
+            maxlength="6"
+            autocomplete="off"
+          />
+
+          <button type="button" id="togglePin" class="toggle-pin" aria-label="Mostrar PIN">
+            <i id="eyeIcon" class="fa-solid fa-eye"></i>
+          </button>
+        </div>
+
+
+        <button class="btn" id="loginBtn">Entrar</button>
+      </div>
+
+      <div id="okBox" class="ok"></div>
+      <div id="errorBox" class="error"></div>
+
+      <div class="muted" style="margin-top:12px;">
+        Tip: si se queda en blanco, revisa que estés usando la URL correcta del Apps Script (/exec).
+      </div>
+    </div>
+  </div>
+
+  <script>
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.getRegistrations().then((regs) => {
+      regs.forEach((reg) => reg.unregister());
+    });
+  }
+
+  if (window.caches) {
+    caches.keys().then((keys) => {
+      keys.forEach((key) => caches.delete(key));
+    });
+  }
+</script>
+
+<script>
+  // ============================
+  // CONFIG
+  // ============================
+  const API_URL = "https://script.google.com/macros/s/AKfycbxb7tNEfgSrmGHAYDYR76rJw3eS9XJ2XG2JaDppxiS1ls0j_iQJck5599wGbkBlvxezZg/exec";
+
+  // Auth en sessionStorage (se borra al cerrar la app/pestaña)
+  const AUTH_KEY = "staffAuthOk";
+  const AUTH_TS_KEY = "staffAuthTs";
+  const PIN_KEY = "staffPin";
+
+  // TTL (inactividad)
+  const AUTH_TTL_MS = 30 * 60 * 1000; // 8 horas
+
+  //boton mostrar
+  const pinInput = document.getElementById("pinInput");
+const eyeIcon = document.getElementById("eyeIcon");
+
+eyeIcon.addEventListener("click", () => {
+  const show = pinInput.type === "password";
+  pinInput.type = show ? "text" : "password";
+
+  eyeIcon.classList.toggle("fa-eye");
+  eyeIcon.classList.toggle("fa-eye-slash");
+});
+
+
+
+  const $ = (id) => document.getElementById(id);
+
+  function showError(msg){
+    const b = $("errorBox");
+    b.style.display = "block";
+    b.textContent = msg;
+    $("okBox").style.display = "none";
+  }
+
+  function showOk(msg){
+    const b = $("okBox");
+    b.style.display = "block";
+    b.textContent = msg;
+    $("errorBox").style.display = "none";
+  }
+
+  // Detecta si está corriendo como PWA instalada
+  function isStandalone_(){
+    return window.matchMedia("(display-mode: standalone)").matches ||
+           window.navigator.standalone === true; // iOS
+  }
+
+  function setAuth_(){
+    sessionStorage.setItem(AUTH_KEY, "1");
+    sessionStorage.setItem(AUTH_TS_KEY, String(Date.now()));
+  }
+
+  function clearAuth_(){
+    sessionStorage.removeItem(AUTH_KEY);
+    sessionStorage.removeItem(AUTH_TS_KEY);
+    sessionStorage.removeItem(PIN_KEY);
+  }
+
+  function isAuthValid_(){
+    const ok = sessionStorage.getItem(AUTH_KEY) === "1";
+    const ts = Number(sessionStorage.getItem(AUTH_TS_KEY) || "0");
+    return ok && ts && (Date.now() - ts) < AUTH_TTL_MS;
+  }
+
+  // Refresca el "último uso" para que no expire si siguen usando la app
+  function touchAuth_(){
+    if (sessionStorage.getItem(AUTH_KEY) === "1") {
+      sessionStorage.setItem(AUTH_TS_KEY, String(Date.now()));
+    }
+  }
+
+  // Entra aquí cada vez que vuelve de background
+  function enforceAuth_(){
+    if (!isAuthValid_()){
+      clearAuth_();
+      // en login solo limpiamos y nos quedamos aquí
+    } else {
+      // sesión válida: refrescamos actividad
+      touchAuth_();
+    }
+  }
+
+  // POST sin headers custom => evita preflight/CORS
+  async function login(pin){
+    const res = await fetch(API_URL, {
+      method: "POST",
+      body: new URLSearchParams({ action: "login", pin })
+    });
+
+    const text = await res.text();
+    let data;
+    try { data = JSON.parse(text); }
+    catch { throw new Error("Respuesta no JSON: " + text); }
+    return data;
+  }
+
+  async function doLogin(){
+    const btn = $("loginBtn");
+    btn.disabled = true;
+    btn.textContent = "Validando…";
+
+    try{
+      const pin = ($("pinInput").value || "").trim();
+      if (!pin) { showError("Ingresa el PIN."); return; }
+
+      const r = await login(pin);
+      if (!r.ok) {
+        showError("PIN inválido.");
+        return;
+      }
+
+      // Guardar PIN SOLO en esta sesión
+      sessionStorage.setItem(PIN_KEY, pin);
+
+      // Marca sesión válida + timestamp
+      setAuth_();
+
+      showOk("✅ Acceso concedido. Abriendo escáner…");
+
+      // Recomendado: replace para que no vuelvan con back al login
+      setTimeout(()=> location.replace("./staff-scan.html"), 350);
+    } catch(e){
+      console.error(e);
+      showError("Error al iniciar sesión. " + (e?.message || e));
+    } finally {
+      btn.disabled = false;
+      btn.textContent = "Entrar";
+    }
+  }
+
+  // ============================
+  // AUTO-FLOW
+  // ============================
+
+  // 1) Siempre valida TTL al cargar
+  enforceAuth_();
+
+  // 2) Solo auto-redirigir si:
+  //    - Está instalada como PWA (standalone)
+  //    - Y la sesión sigue válida
+  if (isStandalone_() && isAuthValid_()) {
+    location.replace("./staff-scan.html");
+  }
+
+  // 3) Si vuelve de background (Android), revisa TTL y refresca TS
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) enforceAuth_();
+  });
+
+  $("loginBtn").addEventListener("click", doLogin);
+  $("pinInput").addEventListener("keydown", (e)=> {
+    if (e.key === "Enter") doLogin();
+  });
+</script>
+
+</body>
+</html>
