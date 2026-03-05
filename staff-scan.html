@@ -298,7 +298,7 @@
     const AUTH_KEY = "staffAuthOk";
     const AUTH_TS_KEY = "staffAuthTs";
     const PIN_KEY = "staffPin";
-    const AUTH_TTL_MS = 8 * 60 * 60 * 1000;
+    const AUTH_TTL_MS = 8 * 60 * 60 * 1000; // 8 horas
 
     let zxingReader = null;
     let scanControls = null;
@@ -309,6 +309,7 @@
 
     let isProcessingTicket = false;
     let currentToken = "";
+    let currentTiket = null;
     let lastScannedText = "";
 
     const $ = (id) => document.getElementById(id);
@@ -552,6 +553,7 @@
 
         touchAuth_();
         currentToken = token;
+        currentTiket = data.ticket;
         lastScannedText = scannedText || "";
 
         setSubtitle("Pase cargado (cámara en pausa)");
@@ -593,45 +595,59 @@
     }
 
     async function doCheckin_(){
-      if (!enforceAuthOrRedirect_()) return;
-      if (!currentToken) {
-        showError("No hay ticket cargado.");
-        return;
+  if (!enforceAuthOrRedirect_()) return;
+  if (!currentToken) {
+    showError("No hay ticket cargado.");
+    return;
+  }
+
+  const btn = $("btnCheckin");
+  if (btn?.disabled) return;
+
+  // UI
+  btn.disabled = true;
+  btn.textContent = "Marcando…";
+  setLoading_(true, "Marcando llegada…");
+
+  try {
+    clearMsgs();
+    const pin = await ensurePin_();
+
+    const r = await apiCheckinWithRetry_(currentToken, pin);
+
+    if (!r.ok){
+      if (r.error === "INVALID_PIN") sessionStorage.removeItem(PIN_KEY);
+
+      if (r.error === "BUSY_TRY_AGAIN") {
+        showError("Sistema ocupado (muchos escaneos). Intenta de nuevo.");
+      } else {
+        showError("No se pudo marcar: " + (r.error || "ERROR"));
       }
 
-      const btn = $("btnCheckin");
-      if (btn?.disabled) return;
-
-      if (btn){
-        btn.disabled = true;
-        btn.textContent = "Marcando…";
-      }
-
-      setLoading_(true, "Marcando llegada…");
-
-      try {
-        clearMsgs();
-        const pin = await ensurePin_();
-        const r = await apiCheckin(currentToken, pin);
-
-        if (!r.ok){
-          if (r.error === "INVALID_PIN") sessionStorage.removeItem(PIN_KEY);
-          showError("No se pudo marcar: " + (r.error || "ERROR"));
-          return;
-        }
-
-        touchAuth_();
-        showOk(r.alreadyUsed ? "⚠️ Este pase YA estaba usado." : "✅ Llegada marcada.");
-
-        await loadAndShowTicket_(currentToken, lastScannedText || currentToken);
-      } catch(e){
-        console.error(e);
-        showError("Error en check-in: " + (e?.message || e));
-      } finally {
-        setLoading_(false);
-        if (btn && !btn.disabled) btn.textContent = "Marcar llegada";
-      }
+      // Restaurar botón según estado actual (si aún es válido)
+      const st = String(currentTicket?.estatus || currentTicket?.status || "").toUpperCase();
+      updateCheckinButton_(st || "ISSUED");
+      return;
     }
+
+    touchAuth_();
+
+    // ✅ Actualiza UI con lo que ya regresó el backend (SIN GET extra)
+    if (r.ticket) currentTicket = r.ticket;
+    if (currentTicket) showTicketUI_(currentTicket);
+
+    showOk(r.alreadyUsed ? "⚠️ Este pase YA estaba usado." : "✅ Llegada marcada.");
+    setSubtitle("Listo (cámara en pausa)");
+  } catch(e){
+    console.error(e);
+    showError("Error en check-in: " + (e?.message || e));
+    // Restaurar botón
+    const st = String(currentTicket?.estatus || currentTicket?.status || "").toUpperCase();
+    updateCheckinButton_(st || "ISSUED");
+  } finally {
+    setLoading_(false);
+  }
+}
 
     async function doClear_(){
       stopScanner_();
@@ -649,6 +665,17 @@
 
       await startScannerNow_();
     }
+
+  async function apiCheckinWithRetry_(token, pin, attempts = 3) {
+    let last = null;
+    for (let i = 0; i < attempts; i++) {
+      last = await apiCheckin(token, pin); // tu función actual :contentReference[oaicite:12]{index=12}
+      if (last?.ok) return last;
+      if (last?.error !== "BUSY_TRY_AGAIN") return last;
+      await sleep_(250 * (i + 1)); // 250ms, 500ms, 750ms
+    }
+    return last || { ok: false, error: "BUSY_TRY_AGAIN" };
+  }
 
     // ============================
     // Cámara + ZXing
