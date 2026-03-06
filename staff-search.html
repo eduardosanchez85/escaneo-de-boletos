@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="es">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -8,201 +9,234 @@
   <link rel="icon" href="./icons/icon.png" type="image/png" />
 
   <style>
-    body{
+    body {
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      margin:0;
-      background:#0b1220;
-      color:#e5e7eb;
+      margin: 0;
+      background: #0b1220;
+      color: #e5e7eb;
     }
 
-    .wrap{
+    .wrap {
       max-width: 1100px;
       margin: 0 auto;
       padding: 18px;
     }
 
-    .topbar{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:12px;
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
       margin-bottom: 12px;
       flex-wrap: wrap;
     }
 
-    h1{ font-size:20px; margin:0; }
-    .muted{ color:#9ca3af; font-size:14px; }
-
-    .btn{
-      padding: 10px 12px;
-      border-radius: 12px;
-      border:1px solid #334155;
-      background:#0f172a;
-      color:#e5e7eb;
-      cursor:pointer;
-      font-weight:700;
+    h1 {
+      font-size: 20px;
+      margin: 0;
     }
 
-    .btn.primary{ background:#2563eb; border-color:#1d4ed8; color:#fff; }
-    .btn.danger{ background:#2a0a0a; border-color:#7f1d1d; color:#fff; }
+    .muted {
+      color: #9ca3af;
+      font-size: 14px;
+    }
 
-    .grid{
-      display:grid;
+    .btn {
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid #334155;
+      background: #0f172a;
+      color: #e5e7eb;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .btn.primary {
+      background: #2563eb;
+      border-color: #1d4ed8;
+      color: #fff;
+    }
+
+    .btn.danger {
+      background: #2a0a0a;
+      border-color: #7f1d1d;
+      color: #fff;
+    }
+
+    .grid {
+      display: grid;
       grid-template-columns: 1fr;
       gap: 12px;
     }
 
-    @media (min-width: 920px){
-      .grid{ grid-template-columns: 1.15fr 0.85fr; align-items:start; }
+    @media (min-width: 920px) {
+      .grid {
+        grid-template-columns: 1.15fr 0.85fr;
+        align-items: start;
+      }
     }
 
-    .card{
-      background:#111827;
-      border:1px solid #1f2937;
+    .card {
+      background: #111827;
+      border: 1px solid #1f2937;
       border-radius: 14px;
       padding: 14px;
     }
 
-    .row{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      align-items:center;
+    .row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
     }
 
-    input{
-      flex:1;
-      min-width:240px;
+    input {
+      flex: 1;
+      min-width: 240px;
       padding: 10px 12px;
       border-radius: 12px;
-      border:1px solid #334155;
-      background:#0f172a;
-      color:#e5e7eb;
-      outline:none;
-      font-size:16px;
+      border: 1px solid #334155;
+      background: #0f172a;
+      color: #e5e7eb;
+      outline: none;
+      font-size: 16px;
     }
 
-    .error{
-      display:none;
-      background:#2a0a0a;
-      border:1px solid #7f1d1d;
-      border-radius:12px;
-      padding:12px;
-      white-space:pre-wrap;
+    .error {
+      display: none;
+      background: #2a0a0a;
+      border: 1px solid #7f1d1d;
+      border-radius: 12px;
+      padding: 12px;
+      white-space: pre-wrap;
       margin-top: 10px;
     }
 
-    .ok{
-      display:none;
-      background:#052e1a;
-      border:1px solid #14532d;
-      border-radius:12px;
-      padding:12px;
-      white-space:pre-wrap;
+    .ok {
+      display: none;
+      background: #052e1a;
+      border: 1px solid #14532d;
+      border-radius: 12px;
+      padding: 12px;
+      white-space: pre-wrap;
       margin-top: 10px;
     }
 
-    .badge{
-      display:inline-block;
+    .badge {
+      display: inline-block;
       padding: 4px 10px;
       border-radius: 999px;
       font-size: 12px;
-      border:1px solid #334155;
+      border: 1px solid #334155;
     }
 
-    .okb{ background:#052e1a; border-color:#14532d; }
-    .warn{ background:#2a1d05; border-color:#78350f; }
-    .bad{ background:#2a0a0a; border-color:#7f1d1d; }
+    .okb {
+      background: #052e1a;
+      border-color: #14532d;
+    }
 
-    .list{
+    .warn {
+      background: #2a1d05;
+      border-color: #78350f;
+    }
+
+    .bad {
+      background: #2a0a0a;
+      border-color: #7f1d1d;
+    }
+
+    .list {
       margin-top: 14px;
-      display:grid;
-      gap:10px;
+      display: grid;
+      gap: 10px;
       max-height: 65vh;
-      overflow:auto;
+      overflow: auto;
       padding-right: 4px;
     }
 
-    .person-item{
-      background:#0f172a;
-      border:1px solid #334155;
+    .person-item {
+      background: #0f172a;
+      border: 1px solid #334155;
       border-radius: 12px;
       padding: 12px;
-      cursor:pointer;
+      cursor: pointer;
       transition: border-color .15s ease, transform .08s ease;
     }
 
-    .person-item:hover{
-      border-color:#60a5fa;
+    .person-item:hover {
+      border-color: #60a5fa;
     }
 
-    .person-item.active{
-      border-color:#2563eb;
-      box-shadow: 0 0 0 1px rgba(37,99,235,.3) inset;
+    .person-item.active {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 1px rgba(37, 99, 235, .3) inset;
     }
 
-    .person-title{
+    .person-title {
       font-size: 16px;
       font-weight: 700;
       margin-bottom: 6px;
     }
 
-    .person-meta{
-      color:#9ca3af;
-      font-size:14px;
-      display:grid;
-      gap:4px;
+    .person-meta {
+      color: #9ca3af;
+      font-size: 14px;
+      display: grid;
+      gap: 4px;
     }
 
-    .ticket{
-      width:100%;
+    .ticket {
+      width: 100%;
       border-radius: 16px;
-      border:1px solid #1f2937;
-      background:#0f172a;
+      border: 1px solid #1f2937;
+      background: #0f172a;
       padding: 16px;
       box-sizing: border-box;
     }
 
-    .info .label{
-      color:#9ca3af;
+    .info .label {
+      color: #9ca3af;
       font-size: 13px;
       margin-top: 10px;
     }
 
-    .info .value{
-      font-size:16px;
-      margin-top:2px;
+    .info .value {
+      font-size: 16px;
+      margin-top: 2px;
       word-break: break-word;
     }
 
-    .actions{
-      display:grid;
+    .actions {
+      display: grid;
       grid-template-columns: 1fr;
-      gap:10px;
+      gap: 10px;
       margin-top: 12px;
     }
 
-    @media (min-width: 920px){
-      .actions{ grid-template-columns: 1fr 1fr; }
+    @media (min-width: 920px) {
+      .actions {
+        grid-template-columns: 1fr 1fr;
+      }
     }
 
-    .empty{
-      color:#9ca3af;
-      border:1px dashed #334155;
-      border-radius:12px;
-      padding:16px;
-      text-align:center;
+    .empty {
+      color: #9ca3af;
+      border: 1px dashed #334155;
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
       margin-top: 12px;
     }
 
-    .loading{
-      display:none;
+    .loading {
+      display: none;
       margin-top: 12px;
-      color:#9ca3af;
-      font-size:14px;
+      color: #9ca3af;
+      font-size: 14px;
     }
   </style>
 </head>
+
 <body>
   <div class="wrap">
     <div class="topbar">
@@ -293,22 +327,22 @@
 
     const $ = (id) => document.getElementById(id);
 
-    function setText_(id, txt){
+    function setText_(id, txt) {
       const el = $(id);
       if (el) el.textContent = txt;
     }
 
-    function setHTML_(id, html){
+    function setHTML_(id, html) {
       const el = $(id);
       if (el) el.innerHTML = html;
     }
 
-    function setDisplay_(id, value){
+    function setDisplay_(id, value) {
       const el = $(id);
       if (el) el.style.display = value;
     }
 
-    function autoHideMsgs_(ms = 3000){
+    function autoHideMsgs_(ms = 3000) {
       if (msgTimer) clearTimeout(msgTimer);
 
       msgTimer = setTimeout(() => {
@@ -327,16 +361,16 @@
       }, ms);
     }
 
-    function showError(msg){
+    function showError(msg) {
       const er = $("errorBox");
       const ok = $("okBox");
 
-      if (er){
+      if (er) {
         er.style.display = "block";
         er.textContent = msg;
       }
 
-      if (ok){
+      if (ok) {
         ok.style.display = "none";
         ok.textContent = "";
       }
@@ -344,16 +378,16 @@
       autoHideMsgs_(4000);
     }
 
-    function showOk(msg){
+    function showOk(msg) {
       const ok = $("okBox");
       const er = $("errorBox");
 
-      if (ok){
+      if (ok) {
         ok.style.display = "block";
         ok.textContent = msg;
       }
 
-      if (er){
+      if (er) {
         er.style.display = "none";
         er.textContent = "";
       }
@@ -361,7 +395,7 @@
       autoHideMsgs_(3000);
     }
 
-    function clearMsgs(){
+    function clearMsgs() {
       if (msgTimer) {
         clearTimeout(msgTimer);
         msgTimer = null;
@@ -370,44 +404,44 @@
       const er = $("errorBox");
       const ok = $("okBox");
 
-      if (er){
+      if (er) {
         er.style.display = "none";
         er.textContent = "";
       }
 
-      if (ok){
+      if (ok) {
         ok.style.display = "none";
         ok.textContent = "";
       }
     }
 
-    function setLoading_(on, msg){
+    function setLoading_(on, msg) {
       const el = $("loadingBox");
       if (!el) return;
       el.style.display = on ? "block" : "none";
       el.textContent = msg || "Sincronizando lista…";
     }
 
-    function isAuthValid_(){
+    function isAuthValid_() {
       const ok = sessionStorage.getItem(AUTH_KEY) === "1";
       const ts = Number(sessionStorage.getItem(AUTH_TS_KEY) || "0");
       return ok && ts && (Date.now() - ts) < AUTH_TTL_MS;
     }
 
-    function touchAuth_(){
+    function touchAuth_() {
       if (sessionStorage.getItem(AUTH_KEY) === "1") {
         sessionStorage.setItem(AUTH_TS_KEY, String(Date.now()));
       }
     }
 
-    function clearAuth_(){
+    function clearAuth_() {
       sessionStorage.removeItem(AUTH_KEY);
       sessionStorage.removeItem(AUTH_TS_KEY);
       sessionStorage.removeItem(PIN_KEY);
     }
 
-    function enforceAuthOrRedirect_(){
-      if (!isAuthValid_()){
+    function enforceAuthOrRedirect_() {
+      if (!isAuthValid_()) {
         clearAuth_();
         location.replace("./index.html");
         return false;
@@ -416,13 +450,13 @@
       return true;
     }
 
-    function logout_(){
+    function logout_() {
       stopSync_();
       clearAuth_();
       location.replace("./index.html");
     }
 
-    async function ensurePin_(){
+    async function ensurePin_() {
       let pin = sessionStorage.getItem(PIN_KEY);
       if (pin) return pin;
 
@@ -433,7 +467,7 @@
       return pin;
     }
 
-    function normalize_(txt){
+    function normalize_(txt) {
       return String(txt || "")
         .normalize("NFD")
         .replace(/[\u0300-\u036f]/g, "")
@@ -441,7 +475,7 @@
         .trim();
     }
 
-    function badgeHtml_(status){
+    function badgeHtml_(status) {
       const s = String(status || "").toUpperCase();
       let cls = "badge";
       let label = s || "DESCONOCIDO";
@@ -454,7 +488,7 @@
       return `<span class="${cls}">${label}</span>`;
     }
 
-    function updateCheckinButton_(status){
+    function updateCheckinButton_(status) {
       const s = String(status || "").toUpperCase();
       const btn = $("btnCheckin");
       if (!btn) return;
@@ -473,7 +507,7 @@
       }
     }
 
-    async function apiListTicketsLite(pin){
+    async function apiListTicketsLite(pin) {
       const res = await fetch(API_URL, {
         method: "POST",
         body: new URLSearchParams({
@@ -490,7 +524,7 @@
       return data;
     }
 
-    async function apiCheckin(token, pin){
+    async function apiCheckin(token, pin) {
       const res = await fetch(API_URL, {
         method: "POST",
         body: new URLSearchParams({
@@ -508,7 +542,7 @@
       return data;
     }
 
-    function escapeHtml_(text){
+    function escapeHtml_(text) {
       return String(text || "")
         .replaceAll("&", "&amp;")
         .replaceAll("<", "&lt;")
@@ -517,14 +551,14 @@
         .replaceAll("'", "&#039;");
     }
 
-    function renderResults_(items){
+    function renderResults_(items) {
       const box = $("resultsBox");
       if (!box) return;
 
       box.innerHTML = "";
       setText_("resultsInfo", `${items.length} resultado(s)`);
 
-      if (!items.length){
+      if (!items.length) {
         setDisplay_("emptyBox", "block");
         return;
       }
@@ -553,10 +587,10 @@
       });
     }
 
-    function applySearch_(){
-      const q = normalize_( $("searchInput")?.value || "" );
+    function applySearch_() {
+      const q = normalize_($("searchInput")?.value || "");
 
-      if (!q){
+      if (!q) {
         filteredCache = [...ticketsCache];
       } else {
         filteredCache = ticketsCache.filter(item => {
@@ -577,7 +611,7 @@
       renderResults_(filteredCache);
     }
 
-    function selectTicket_(token){
+    function selectTicket_(token) {
       currentToken = token;
       const item = ticketsCache.find(x => x.token === token);
       if (!item) return;
@@ -597,7 +631,7 @@
       applySearch_();
     }
 
-    function clearSelection_(){
+    function clearSelection_() {
       currentToken = "";
       setDisplay_("ticketBox", "none");
       setDisplay_("actionsBox", "none");
@@ -613,7 +647,7 @@
       applySearch_();
     }
 
-    function mergeItems_(items){
+    function mergeItems_(items) {
       ticketsCache = Array.isArray(items) ? items.slice() : [];
 
       ticketsCache.sort((a, b) => {
@@ -623,7 +657,21 @@
       });
     }
 
-    async function syncTickets_(showToast = false){
+    //Contador
+    function updateCounters_() {
+      const total = ticketsCache.length;
+      const registrados = ticketsCache.filter(item =>
+        String(item.estatus || "").toUpperCase() === "USED"
+      ).length;
+      const pendientes = total - registrados;
+
+      setText_(
+        "subtitle",
+        `Registrados: ${registrados} · Pendientes: ${pendientes} · Total: ${total}`
+      );
+    }
+
+    async function syncTickets_(showToast = false) {
       if (!enforceAuthOrRedirect_()) return;
       if (syncing) return;
 
@@ -634,13 +682,14 @@
         const pin = await ensurePin_();
         const r = await apiListTicketsLite(pin);
 
-        if (!r.ok){
+        if (!r.ok) {
           if (r.error === "INVALID_PIN") sessionStorage.removeItem(PIN_KEY);
           throw new Error(r.error || "No se pudo sincronizar.");
         }
 
         mergeItems_(r.items || []);
         applySearch_();
+        updateCounters_();
 
         if (currentToken) {
           const stillExists = ticketsCache.find(x => x.token === currentToken);
@@ -649,7 +698,6 @@
         }
 
         touchAuth_();
-        setText_("subtitle", `Lista sincronizada · ${r.count || 0} registros`);
         if (showToast) showOk("✅ Lista actualizada.");
       } catch (e) {
         console.error(e);
@@ -660,7 +708,8 @@
       }
     }
 
-    async function doCheckin_(){
+
+    async function doCheckin_() {
       if (!enforceAuthOrRedirect_()) return;
       if (!currentToken) {
         showError("Selecciona una persona primero.");
@@ -678,7 +727,7 @@
         const pin = await ensurePin_();
         const r = await apiCheckin(currentToken, pin);
 
-        if (!r.ok){
+        if (!r.ok) {
           if (r.error === "INVALID_PIN") sessionStorage.removeItem(PIN_KEY);
           throw new Error(r.error || "No se pudo marcar llegada.");
         }
@@ -699,6 +748,7 @@
         }
 
         applySearch_();
+        updateCounters_();
         selectTicket_(currentToken);
         showOk(r.alreadyUsed ? "⚠️ Este pase ya estaba usado." : "✅ Llegada marcada.");
 
@@ -712,14 +762,15 @@
       }
     }
 
-    function startSync_(){
+
+    function startSync_() {
       stopSync_();
       syncTimer = setInterval(() => {
         syncTickets_(false);
       }, SYNC_MS);
     }
 
-    function stopSync_(){
+    function stopSync_() {
       if (syncTimer) {
         clearInterval(syncTimer);
         syncTimer = null;
@@ -761,4 +812,5 @@
     });
   </script>
 </body>
+
 </html>
